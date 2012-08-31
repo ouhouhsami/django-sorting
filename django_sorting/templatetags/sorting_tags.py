@@ -1,6 +1,7 @@
 from django import template
 from django.http import Http404
 from django.conf import settings
+from django.utils.html import escape
 
 register = template.Library()
 
@@ -67,12 +68,14 @@ class SortAnchorNode(template.Node):
             urlappend = "&%s" % getvars.urlencode()
         else:
             urlappend = ''
+        
         if icon:
             title = "%s %s" % (self.title, icon)
         else:
             title = self.title
 
         url = '%s?sort=%s%s' % (request.path, self.field, urlappend)
+        url = escape(url)
         return '<a href="%s" title="%s">%s</a>' % (url, self.title, title)
 
 
